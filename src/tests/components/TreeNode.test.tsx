@@ -1,8 +1,11 @@
+import React from 'react'
 import { render, screen } from '@testing-library/react'
-import DateDisplay from '../../components/DateDisplay'
+
+// import { TreeNode } from '../../components/TreeNode'
+import { mockApiData } from '../../resources/api-data'
 
 test('renders current date', () => {
-    render(<DateDisplay />)
+    // render(<TreeNode node={mockApiData} />)
     const timeFormat = screen.getByText(/GMT/i)
     expect(timeFormat).toBeInTheDocument()
 })
