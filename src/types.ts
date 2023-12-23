@@ -1,11 +1,7 @@
-export type TFolder = {
-    id: number
-    name: string
-    folders: TFolder[]
-    files: TFile[]
-}
+export const AccessLevels = {
+    read: 'read', // user can read
+    write: 'write', // user can read
+    admin: 'admin' // only admin can read&write
+} as const
 
-export type TFile = {
-    id: number
-    name: string
-}
+export type AccessLevel = (typeof AccessLevels)[keyof typeof AccessLevels]

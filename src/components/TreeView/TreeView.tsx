@@ -1,6 +1,7 @@
 import React from 'react'
 import { TreeItem } from '../TreeItem'
 import { RenderTree } from '../../resources/api-data'
+import { AccessLevel } from '../../types'
 
 type TreeViewProps = {
     data?: RenderTree[]
@@ -23,9 +24,26 @@ export const TreeView = (props: TreeViewProps) => {
         onNodeSelect && onNodeSelect(nodeIds)
     }
 
+    const checkAccess = (access: AccessLevel, userAccess: AccessLevel): boolean => {
+        switch (userAccess) {
+            case 'admin':
+                return true
+            case 'write':
+                return access === 'read' || access === 'write'
+            case 'read':
+                return access === 'read'
+            default:
+                return false
+        }
+    }
+
     const renderTree = (nodes?: RenderTree[], parentIds: string[] = []) =>
         nodes?.map((node) => {
             const isNonEmptyFolder = Array.isArray(node.children) && node.children.length > 0
+            const mockUserAccessLevel = 'admin' // To be changed for testing purposes
+            if (!checkAccess(node.access, mockUserAccessLevel)) {
+                return null
+            }
             return (
                 <TreeItem
                     key={node.id}
