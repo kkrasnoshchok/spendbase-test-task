@@ -1,0 +1,30 @@
+.header {
+    cursor: pointer;
+    border-radius: 6px;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    &Icon {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-right: 0.5rem;
+        color: rgba(72, 72, 74);
+        &Selected {
+            color: white;
+        }
+    }
+    &Title {
+        font-weight: 500;
+    }
+    &Selected {
+        color: white;
+        background: rgba(10, 132, 255, 1);
+    }
+}
+
+
+.content {
+    margin-left: 1rem;
+}
