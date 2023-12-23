@@ -2,7 +2,7 @@ export type RenderTree = {
     id: string
     name: string
     parentIds: string[]
-    children?: readonly RenderTree[]
+    children?: RenderTree[]
 }
 
 export const mockApiData: RenderTree = {
