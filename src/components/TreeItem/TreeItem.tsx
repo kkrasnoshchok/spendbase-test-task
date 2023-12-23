@@ -26,6 +26,7 @@ export const TreeItem = (props: CustomTreeItemProps) => {
                     [styles.headerSelected]: selected
                 })}
             >
+                {/* In case element has non-empty `children`, it's automatically a folder in our case. That's why we render arrows */}
                 {children && (
                     <div
                         className={classnames(styles.headerIcon, { [styles.headerIconSelected]: selected })}

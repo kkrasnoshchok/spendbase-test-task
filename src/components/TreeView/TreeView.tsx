@@ -23,6 +23,9 @@ export const TreeView = (props: TreeViewProps): (JSX.Element | null)[] | null =>
         onNodeSelect(nodeIds)
     }
 
+    //? In case user is admin, he has access to all the files and folders
+    //? user who has `write` access, has access both for `write` and `read` elements.
+    //? user who has `read` access, has only access for `read` elements
     const checkAccess = (access: AccessLevel, userAccess: AccessLevel): boolean => {
         switch (userAccess) {
             case 'admin':
@@ -35,6 +38,9 @@ export const TreeView = (props: TreeViewProps): (JSX.Element | null)[] | null =>
                 return false
         }
     }
+
+    //? Recursive function which goes through all the nested elements and renders each file & folder as `TreeItem`
+    // which then separates on file / folder via existense of `children` in current version
 
     const renderTree = (nodes?: RenderTree[], parentIds: string[] = []): (JSX.Element | null)[] | null => {
         if (!nodes?.length) {
