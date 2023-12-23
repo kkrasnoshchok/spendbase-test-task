@@ -4,7 +4,7 @@ import { HomePage } from './pages/Home'
 import NotFoundPage from './pages/NotFoundPage'
 import './styles/main.sass'
 
-const RootComponent: React.FC = () => {
+const RootComponent = (): JSX.Element => {
     return (
         <Router>
             <Routes>

@@ -1,8 +1,6 @@
 import React from 'react'
 import RootComponent from './RootComponent'
 
-const App: React.FC = () => {
-    return <RootComponent />
-}
+const App = (): JSX.Element => <RootComponent />
 
 export default App
