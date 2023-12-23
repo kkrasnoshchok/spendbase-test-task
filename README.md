@@ -1,140 +1,83 @@
-<h1 align="center">New React App</h1>
+<h1>Відповіді на питання, поставленні в задачі:</h1>
+<h3 className={styles.structureAnswerTitle}>Структура даних для папок та файлів, яку б ви хотіли отримувати від API</h3>
+<p>We receive such object/s from API</p>
+1. TypeScript
+<pre>
+{
+    id: '3', // uuid of the element 
+    extension: '', // extension to identify whether it's file or folder (in folders we have empty extension)
+    name: 'Empty Folder',
+    parentIds: ['0'], // parent ids to be discussed with backend team (whether it's easier to calculate on client side or by them. Would be nice to get this data for less calculations and better rendering speed on client)
+    access: 'read', // access levels ('admin' | 'read' | 'write' and any customs)
+    children: RootObject[], // children contain inner files or folders. It's always empty in `files`. It's recursive type, which is the same as it's parent
+    dateCreated: Date
+    dateLastModified: Date, // Would be nice to get both created and last modified data, which could be very helpful for user on client
+    size: number,
+}
+</pre>
+2. JSON
+<pre>
+{
+  "id": "",
+  "extension": "",
+  "name": "",
+  "parentIds": [""],
+  "access": "",
+  "children": [],
+  "dateCreated": "2023-12-23T15:55:43.018Z", // just example of the date
+  "dateLastModified": "2023-12-23T15:55:43.018Z", // just example of the date
+  "size": 0
+}
+</pre>
+3. PostgreSQL
+<pre>
+CREATE TABLE mytable (
+    id UUID PRIMARY KEY,
+    extension TEXT,
+    name TEXT,
+    parentIds JSON,
+    access TEXT,
+    children JSON,
+    dateCreated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    dateLastModified TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    size BIGINT
+);
+</pre>
+<hr />
+<p>Identification of item type(File/Folder). It is not needed for tasks I had to do, but will be needed for navigation inside of a folder/s and opening files: </p>
+1. Empty Folder
+<pre className={styles.structureAnswerCode}>
+{
+    id: '3',
+    extension: '',
+    name: 'Empty Folder',
+    parentIds: ['0'],
+    access: 'read',
+    children: [],
+    ....
+}
+</pre>
+2. File
+<pre className={styles.structureAnswerCode}>
+{
+    id: '5',
+    extension: 'png',
+    name: 'Png File',
+    parentIds: ['0', '2', '4'],
+    access: 'read',
+    children: [],
+    ....
+}
+</pre>
 
-<br />
+---
 
-This is a blank README file that you can customize at your needs.\
-Describe your project, how it works and how to contribute to it.
-
-<br />
-
-# 🚀 Available Scripts
-
-In the project directory, you can run:
-
-<br />
-
-## ⚡️ start
-
-```
-yarn start
-```
-
-or
-
-```
-yarn start
-```
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-<br />
-
-## 🧪 test
-
-```
-yarn test
-```
-
-or
-
-```
-yarn test
-```
-
-Launches the test runner in the interactive watch mode.
-
-<br />
-
-## 🦾 build
-
-```
-yarn build
-```
-
-or
-
-```
-yarn build
-```
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.
-
-<br />
-
-## 🧶 lint
-
-```
-yarn lint
-```
-
-or
-
-```
-yarn lint
-```
-
-Creates a `.eslintcache` file in which ESLint cache is stored. Running this command can dramatically improve ESLint's running time by ensuring that only changed files are linted.
-
-<br />
-
-## 🎯 format
-
-```
-yarn format
-```
-
-or
-
-```
-yarn format
-```
-
-Checks if your files are formatted. This command will output a human-friendly message and a list of unformatted files, if any.
-
-<br />
-
-# 🧬 Project structure
-
-This is the structure of the files in the project:
-
-```sh
-    │
-    ├── public                  # public files (favicon, .htaccess, manifest, ...)
-    ├── src                     # source files
-    │   ├── components
-    │   ├── pages
-    │   ├── resources           # images, constants and other static resources
-    │   ├── store               # Redux store
-    │   │   ├── actions         # store's actions
-    │   │   └── reducers        # store's reducers
-    │   ├── styles
-    │   ├── tests               # all test files
-    │   ├── types               # data interfaces
-    │   ├── utility             # utilities functions and custom components
-    │   ├── App.tsx
-    │   ├── index.tsx
-    │   ├── react-app-env.d.ts
-    │   ├── RootComponent.tsx   # React component with all the routes
-    │   ├── serviceWorker.ts
-    │   └── setupTests.ts
-    ├── .eslintrc.js
-    ├── .gitignore
-    ├── .prettierrc
-    ├── package.json
-    ├── README.md
-    └── tsconfig.json
-```
-
-# 📖 Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-#
-
-<p align="center">Bootstrapped with Create React App.</p>
+<h3>Потенційні вразливі місця з точки зору продуктивності</h3>
+<ul>
+<li>Через те що для пошуку, відображення, видалення та сортування(в майбутньому) та ще велику кількість операцій ми використовуємо рекурсію, ми маємо проблеми з усіма цими операціями за умови великої кількості та глибокої вкладенности даних. Це все буде довго завантажуватись, довго видалятись, довго шукатись за великої кількості даних
+</li>
+<li>
+Величезний кусок даних, які ми отримуємо одразу, адже що root файли і папки, що всі вкладені ми отримуємо одночасно. Ми не можемо просто вирішити цю проблему за допомогою lazy loading всіх вкладених даних, через те що це по факту вбʼє UX. 
+</li>
+    
+</ul>

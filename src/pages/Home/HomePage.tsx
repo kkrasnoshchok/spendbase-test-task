@@ -28,7 +28,9 @@ export const HomePage = (): JSX.Element => {
             <div className={styles.folder}>
                 <div className={styles.header}>
                     <HeaderControls />
-                    <h3 className={styles.headerTitle}>{data.name}</h3>
+                    <h3 className={styles.headerTitle}>
+                        {data.name} {`->`} Task Itself
+                    </h3>
                     <div className={styles.headerSearch}>
                         <Search onSubmit={(value) => searchNodeByName(data, value)} />
                     </div>
